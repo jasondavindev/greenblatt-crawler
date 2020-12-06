@@ -1,9 +1,7 @@
 package requester
 
 import (
-	"encoding/json"
-	"fmt"
-	"net/url"
+	"github.com/jasondavindev/statusinvest-crawler/config"
 )
 
 // RequestParams Parametros de request
@@ -25,25 +23,13 @@ type ParamItem struct {
 	Item2 float32
 }
 
-// InputItems Input de pesquisa
-type InputItems struct {
-	Dividendo    []float32
-	PL           []float32
-	DivLiqEbit   []float32
-	DivLiqPatLiq []float32
-	Roe          []float32
-	Roic         []float32
-	Roa          []float32
-	LiqMedDiaria []float32
-}
-
 // CreateParamItem Cria item de parametros de request http
 func CreateParamItem(min, max float32) ParamItem {
 	return ParamItem{Item1: min, Item2: max}
 }
 
 // CreateRequestParams Cria parametros para fazer request http
-func CreateRequestParams(inputParams InputItems) RequestParams {
+func CreateRequestParams(inputParams config.Filters) RequestParams {
 	params := RequestParams{
 		Dy:                             CreateParamItem(inputParams.Dividendo[0], inputParams.Dividendo[1]),
 		PL:                             CreateParamItem(inputParams.PL[0], inputParams.PL[1]),
@@ -57,20 +43,4 @@ func CreateRequestParams(inputParams InputItems) RequestParams {
 	}
 
 	return params
-}
-
-// ToJSON Converte request params para formato JSON
-func (crp *RequestParams) ToJSON() string {
-	jsonMap, err := json.Marshal(crp)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return string(jsonMap)
-}
-
-// CreateURL Cria string content URL de request
-func (crp *RequestParams) CreateURL() string {
-	return fmt.Sprintf("https://statusinvest.com.br/category/advancedsearchresult?CategoryType=1&search=%s", url.QueryEscape(crp.ToJSON()))
 }

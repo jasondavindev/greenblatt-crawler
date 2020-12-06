@@ -2,10 +2,12 @@ package requester
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 // StatusInvestResponseItem Item resposta
@@ -66,4 +68,20 @@ func ParseResponse(res io.Reader) StatusInvestResponse {
 	}
 
 	return b
+}
+
+// ToJSON Converte request params para formato JSON
+func (crp *RequestParams) ToJSON() string {
+	jsonMap, err := json.Marshal(crp)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return string(jsonMap)
+}
+
+// CreateURL Cria string content URL de request
+func (crp *RequestParams) CreateURL() string {
+	return fmt.Sprintf("https://statusinvest.com.br/category/advancedsearchresult?CategoryType=1&search=%s", url.QueryEscape(crp.ToJSON()))
 }

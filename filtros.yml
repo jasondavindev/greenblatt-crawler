@@ -1,0 +1,25 @@
+filtros:
+  dividendo:
+    - 0.1
+    - 10
+  pl:
+    - 0.1
+    - 10
+  divliqebit:
+    - 0.1
+    - 2
+  divliqpatliq:
+    - 0.1
+    - 2
+  roe:
+    - 0.1
+    - 100
+  roic:
+    - 0.1
+    - 100
+  roa:
+    - 0.1
+    - 100
+  liqmeddiaria:
+    - 1000000
+    - 10000000000
