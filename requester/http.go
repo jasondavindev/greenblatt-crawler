@@ -40,6 +40,8 @@ type StatusInvestResponse = []StatusInvestResponseItem
 
 // Find Faz solicitacao para site status invest
 func Find(r RequestParams) StatusInvestResponse {
+	fmt.Println("Buscando recursos na API Status Invest...")
+
 	getURL := r.CreateURL()
 
 	res, err := http.Get(getURL)

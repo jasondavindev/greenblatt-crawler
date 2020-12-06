@@ -12,7 +12,11 @@ import (
 
 // Write Escreve arquivo csv
 func Write(d requester.StatusInvestResponse) {
-	file, err := os.Create("result.csv")
+	fmt.Println("Salvando dados em arquivo...")
+
+	csvFileName := "result.csv"
+
+	file, err := os.Create(csvFileName)
 	checkError("Cannot create file", err)
 	defer file.Close()
 
@@ -27,6 +31,8 @@ func Write(d requester.StatusInvestResponse) {
 		err := writer.Write(v)
 		checkError("Cannot write to file", err)
 	}
+
+	fmt.Println("Prontinho! Seus dados estão no arquivo", csvFileName)
 }
 
 func checkError(message string, err error) {

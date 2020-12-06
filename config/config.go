@@ -2,6 +2,7 @@ package config
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -22,6 +23,8 @@ type Filters struct {
 
 // CfgFactory Carrega todos os filtros
 func CfgFactory(configPath string) Filters {
+	fmt.Println("Carregando arquivo contendo os filtros...")
+
 	yamlFile, err := ioutil.ReadFile(configPath)
 
 	if err != nil {

@@ -1,1 +1,3 @@
 /result.csv
+/build/*
+!/build/.gitkeep
