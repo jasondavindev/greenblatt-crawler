@@ -73,7 +73,7 @@ func FindCompanyByName(d requester.StatusInvestResponse, name string) int {
 	return -1
 }
 
-// SortCompanies Ordena as companias pelos ranks
+// SortCompanies Ordena as companhias pelos ranks
 func SortCompanies(d requester.StatusInvestResponse) map[string]GreenblattRank {
 	m := make(map[string]GreenblattRank)
 	byPL := SortAscBy(d, "PL")
@@ -113,6 +113,7 @@ func createIfNotExists(m *map[string]GreenblattRank, name string) {
 	}
 }
 
+// GetSortedByFinalPosition Ordena companhias pelo rank final
 func GetSortedByFinalPosition(m map[string]GreenblattRank, d requester.StatusInvestResponse) requester.StatusInvestResponse {
 	type kv struct {
 		Key   string
