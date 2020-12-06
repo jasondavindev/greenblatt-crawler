@@ -1,4 +1,4 @@
-# Status Invest Crawler
+# Greenblatt Crawler
 
 Este repositório contém uma aplicação escrita em Golang que busca ativos de empresas listadas na bolsa (B3) de acordo com determinados filtros. Com os dados computados, é aplicado uma fórmula personalizada baseada na de [Joel Greenblatt](https://www.amazon.com/Formula-Magica-Greenblatt-Mercado-Portugues/dp/8557173601?tag=techblast0f-20).
 
@@ -25,10 +25,10 @@ make dkbuild
 
 ### Rodando aplicação
 
-Após a etapa de build, será gerado um arquivo na pasta `build/statusinvest_crawler(.exe)`. Execute-o apenas clicando (Windows) ou da seguinte forma em ambientes Unix
+Após a etapa de build, será gerado um arquivo na pasta `build/greenblatt_crawler(.exe)`. Execute-o apenas clicando (Windows) ou da seguinte forma em ambientes Unix
 
 ```bash
-./build/statusinvest_crawler
+./build/greenblatt_crawler
 ```
 
 Saída esperada
