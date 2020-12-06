@@ -10,11 +10,11 @@ import (
 
 // StatusInvestResponseItem Item resposta
 type StatusInvestResponseItem struct {
-	CompanyName                    string  `json:"companyName"`
+	Companhia                      string  `json:"companyName"`
 	Ticker                         string  `json:"ticker"`
-	Price                          float32 `json:"price"`
+	Preco                          float32 `json:"price"`
 	PL                             float32 `json:"p_L"`
-	Dividend                       float32 `json:"dy"`
+	Dividendo                      float32 `json:"dy"`
 	Roic                           float32 `json:"roic"`
 	DividaLiquidaEbit              float32 `json:"dividaLiquidaEbit"`
 	DividaliquidaPatrimonioLiquido float32 `json:"dividaliquidaPatrimonioLiquido"`

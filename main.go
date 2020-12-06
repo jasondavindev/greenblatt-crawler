@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-
+	"github.com/jasondavindev/statusinvest-crawler/csv"
 	"github.com/jasondavindev/statusinvest-crawler/greenblatt"
 	"github.com/jasondavindev/statusinvest-crawler/requester"
 )
@@ -23,5 +22,6 @@ func main() {
 
 	r := requester.Find(ps)
 	m := greenblatt.SortCompanies(r)
-	fmt.Println(greenblatt.GetSortedByFinalPosition(m, r))
+	fp := greenblatt.GetSortedByFinalPosition(m, r)
+	csv.Write(fp)
 }
