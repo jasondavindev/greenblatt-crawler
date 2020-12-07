@@ -5,6 +5,39 @@ Este repositório contém uma aplicação escrita em Golang que busca ativos de 
 - Você consegue alterar os filtros listados no arquivo `filtros.yml`
 - Os dados de saída serão gerados no arquivo `result.csv`
 
+## Filtros
+
+A aplicação permite os seguintes filtros:
+- Dividendo
+- P/L
+- Dívida Líquida / EBIT
+- Dívida Líquida / Patrimonio Liquido
+- ROE
+- ROIC
+- ROA
+- Liquidez Média Diária
+
+No arquivo de configuração, você deve seguir o seguinte padrão:
+
+```yaml
+filtros:
+  dividendo: (em porcentagem)
+    - valor mínimo (ex: 0.1)
+    - valor máximo (ex: 100)
+  liqmeddiaria:
+    - 1000000
+    - 10000000000
+```
+
+## Ordenação
+
+A ordenação aplicada segue os seguintes criterios:
+
+- P/L ordem crescente
+- ROIC ordem decrescente
+- Dividendo ordem decrescente
+- Posição final -> soma das posições das ordenações anteriores
+
 ## Buildando aplicação
 
 ### Sem Docker
