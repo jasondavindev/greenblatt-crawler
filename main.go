@@ -9,8 +9,7 @@ import (
 
 func main() {
 	filters := config.CfgFactory("filtros.yml")
-	ps := requester.CreateRequestParams(filters)
-	r := requester.Find(ps)
+	r := requester.Find(filters)
 	m := greenblatt.SortCompanies(r)
 	fp := greenblatt.GetSortedByFinalPosition(m, r)
 	csv.Write(fp)

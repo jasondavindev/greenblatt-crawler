@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+
+	"github.com/jasondavindev/statusinvest-crawler/config"
 )
 
 // StatusInvestResponseItem Item resposta
@@ -39,12 +41,12 @@ type StatusInvestResponseItem struct {
 type StatusInvestResponse = []StatusInvestResponseItem
 
 // Find Faz solicitacao para site status invest
-func Find(r RequestParams) StatusInvestResponse {
+func Find(cfg config.Filters) StatusInvestResponse {
 	fmt.Println("Buscando recursos na API Status Invest...")
 
-	getURL := r.CreateURL()
+	url := CreateURL(cfg)
 
-	res, err := http.Get(getURL)
+	res, err := http.Get(url)
 
 	if err != nil {
 		log.Fatalln(err)
@@ -72,18 +74,20 @@ func ParseResponse(res io.Reader) StatusInvestResponse {
 	return b
 }
 
+// CreateURL Cria string content URL de request
+func CreateURL(cfg config.Filters) string {
+	reqParams := ParseFiltersToParams(&cfg)
+	json := ToJSON(reqParams)
+	return fmt.Sprintf("https://statusinvest.com.br/category/advancedsearchresult?CategoryType=1&search=%s", url.QueryEscape(json))
+}
+
 // ToJSON Converte request params para formato JSON
-func (crp *RequestParams) ToJSON() string {
-	jsonMap, err := json.Marshal(crp)
+func ToJSON(v interface{}) string {
+	jsonMap, err := json.Marshal(v)
 
 	if err != nil {
 		panic(err)
 	}
 
 	return string(jsonMap)
-}
-
-// CreateURL Cria string content URL de request
-func (crp *RequestParams) CreateURL() string {
-	return fmt.Sprintf("https://statusinvest.com.br/category/advancedsearchresult?CategoryType=1&search=%s", url.QueryEscape(crp.ToJSON()))
 }

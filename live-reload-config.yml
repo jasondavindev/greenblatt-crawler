@@ -1,0 +1,7 @@
+# Config file for github.com/jasondavindev/live-reload-go
+development:
+  goenv: development
+  directory: "./"
+  exclude: "result.csv"
+  commands:
+    - "go run main.go"

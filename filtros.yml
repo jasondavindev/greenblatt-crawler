@@ -1,25 +1,26 @@
 filtros:
-  dividendo:
+  dy:
     - 0.1
-    - 10
-  pl:
-    - 0.1
-    - 10
-  divliqebit:
-    - 0.1
-    - 2
-  divliqpatliq:
-    - 0.1
-    - 2
+    - 25
+  p_L:
+    - 0.001
+    - 20
+  dividaLiquidaEbit:
+    - 0.01
+    - 3
+  dividaliquidaPatrimonioLiquido:
+    - 0.01
+    - 3
   roe:
-    - 0.1
+    - 0.01
     - 100
   roic:
-    - 0.1
+    - 0.01
     - 100
   roa:
-    - 0.1
+    - 0.01
     - 100
-  liqmeddiaria:
+  liquidezMediaDiaria:
     - 1000000
-    - 10000000000
+    - 100000000000000
+  my_range: "0;25"

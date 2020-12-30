@@ -7,36 +7,69 @@ Este repositório contém uma aplicação escrita em Golang que busca ativos de 
 
 ## Filtros
 
-A aplicação permite os seguintes filtros:
-- Dividendo
-- P/L
-- Dívida Líquida / EBIT
-- Dívida Líquida / Patrimonio Liquido
-- ROE
-- ROIC
-- ROA
-- Liquidez Média Diária
-
 No arquivo de configuração, você deve seguir o seguinte padrão:
 
 ```yaml
 filtros:
-  dividendo: (em porcentagem)
-    - valor mínimo (ex: 0.1)
-    - valor máximo (ex: 100)
-  liqmeddiaria:
-    - 1000000
-    - 10000000000
+  dy: # (em porcentagem)
+    - valor mínimo # (ex: 0.1)
+    - valor máximo # (ex: 100)
+  roe:
+    - 0.1 # (quando emitido o segundo valor, o valor padrão será zero (0))
 ```
+
+Filtros disponíveis:
+
+```
+dy
+p_L
+p_VP
+p_Ativo
+margemBruta
+margemEbit
+margemLiquida
+p_Ebit
+eV_Ebit
+dividaLiquidaEbit
+dividaliquidaPatrimonioLiquido
+p_SR
+p_CapitalGiro
+p_AtivoCirculante
+roe
+roic
+roa
+liquidezCorrente
+pl_Ativo
+passivo_Ativo
+giroAtivos
+receitas_Cagr5
+lucros_Cagr5
+liquidezMediaDiaria
+vpa
+lpa
+```
+
+### Filtros extras
+
+A API permite filtrar por alguns filtros extras que obecedem um formato diferente. Alguns filtros:
+
+| Nome | Tipo | Valor padrão |
+| ---- | ---- | ------------ |
+| Sector | string | vazio |
+| SubSector | string | vazio |
+| Segment | string | vazio |
+| my_range | string | "0;25" |
 
 ## Ordenação
 
 A ordenação aplicada segue os seguintes criterios:
 
-- P/L ordem crescente
-- ROIC ordem decrescente
-- Dividendo ordem decrescente
-- Posição final -> soma das posições das ordenações anteriores
+| Nome | Regra |
+| ---- | ----- |
+| P/L  | Ordem crescente |
+| ROIC | Ordem decrescente |
+| Dividendo | Ordem decrescente |
+| Posição final | Soma das posições das ordenações anteriores |
 
 ## Buildando aplicação
 

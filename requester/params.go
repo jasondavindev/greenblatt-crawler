@@ -4,43 +4,82 @@ import (
 	"github.com/jasondavindev/statusinvest-crawler/config"
 )
 
-// RequestParams Parametros de request
-type RequestParams struct {
-	Dy                             ParamItem `json:"dy"`
-	PL                             ParamItem `json:"p_L"`
-	DividaLiquidaEbit              ParamItem `json:"dividaLiquidaEbit"`
-	DividaliquidaPatrimonioLiquido ParamItem `json:"dividaliquidaPatrimonioLiquido"`
-	Roe                            ParamItem `json:"roe"`
-	Roic                           ParamItem `json:"roic"`
-	Roa                            ParamItem `json:"roa"`
-	LiquidezMediaDiaria            ParamItem `json:"liquidezMediaDiaria"`
-	MyRange                        string    `json:"my_range"`
-}
+// FieldProperties Estrutura do parâmetro da request http
+type FieldProperties map[string]float32
 
-// ParamItem Item de parametro de request
-type ParamItem struct {
-	Item1 float32
-	Item2 float32
-}
+// RequestParam Estrutura final do data filtro da request http
+type RequestParam map[string]interface{}
 
-// CreateParamItem Cria item de parametros de request http
-func CreateParamItem(min, max float32) ParamItem {
-	return ParamItem{Item1: min, Item2: max}
-}
+// ParseFiltersToParams Converte os filtros para formato de parametros
+func ParseFiltersToParams(f *config.Filters) RequestParam {
+	reqParam := make(RequestParam)
 
-// CreateRequestParams Cria parametros para fazer request http
-func CreateRequestParams(inputParams config.Filters) RequestParams {
-	params := RequestParams{
-		Dy:                             CreateParamItem(inputParams.Dividendo[0], inputParams.Dividendo[1]),
-		PL:                             CreateParamItem(inputParams.PL[0], inputParams.PL[1]),
-		DividaLiquidaEbit:              CreateParamItem(inputParams.DivLiqEbit[0], inputParams.DivLiqEbit[1]),
-		DividaliquidaPatrimonioLiquido: CreateParamItem(inputParams.DivLiqPatLiq[0], inputParams.DivLiqPatLiq[1]),
-		Roe:                            CreateParamItem(inputParams.Roe[0], inputParams.Roe[1]),
-		Roic:                           CreateParamItem(inputParams.Roic[0], inputParams.Roic[1]),
-		Roa:                            CreateParamItem(inputParams.Roa[0], inputParams.Roa[1]),
-		LiquidezMediaDiaria:            CreateParamItem(inputParams.LiqMedDiaria[0], inputParams.LiqMedDiaria[1]),
-		MyRange:                        "0;25",
+	for k, v := range *f {
+		if isExcludedField(k) {
+			reqParam[k] = v
+			continue
+		}
+
+		parsedValues := parsenInterfaceToFloat32Slice(v)
+
+		param := parseFilterToParam(k, parsedValues)
+
+		if param != nil {
+			reqParam[k] = *param
+		} else {
+			reqParam[k] = v
+		}
 	}
 
-	return params
+	return reqParam
+}
+
+func isExcludedField(key string) bool {
+	for _, f := range GetExludedFields() {
+		if f == key {
+			return true
+		}
+	}
+	return false
+}
+
+func parseFilterToParam(key string, values []float32) *FieldProperties {
+	prop := make(FieldProperties)
+
+	prop["Item1"] = values[0]
+
+	if len(values) == 2 {
+		prop["Item2"] = values[1]
+	}
+
+	return &prop
+}
+
+// GetExludedFields Campos que não devem ser convertidos
+func GetExludedFields() []string {
+	return []string{"my_range", "Segment", "SubSector", "Sector"}
+}
+
+func parsenInterfaceToFloat32Slice(i interface{}) []float32 {
+	switch t := i.(type) {
+	case []interface{}:
+		sl := []float32{}
+
+		for _, v := range t {
+			switch vt := v.(type) {
+			case float64:
+				sl = append(sl, float32(vt))
+			case float32:
+				sl = append(sl, vt)
+			case int:
+				sl = append(sl, float32(vt))
+			default:
+				sl = append(sl, 0)
+			}
+		}
+
+		return sl
+	}
+
+	return []float32{}
 }

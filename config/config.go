@@ -10,16 +10,7 @@ import (
 )
 
 // Filters Filtros disponiveis
-type Filters struct {
-	Dividendo    [2]float32
-	PL           [2]float32
-	DivLiqEbit   [2]float32
-	DivLiqPatLiq [2]float32
-	Roe          [2]float32
-	Roic         [2]float32
-	Roa          [2]float32
-	LiqMedDiaria [2]float32
-}
+type Filters map[string]interface{}
 
 // CfgFactory Carrega todos os filtros
 func CfgFactory(configPath string) Filters {
