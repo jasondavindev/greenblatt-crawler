@@ -1,7 +1,6 @@
 package greenblatt
 
 import (
-	"fmt"
 	"sort"
 
 	"github.com/jasondavindev/statusinvest-crawler/requester_types"
@@ -45,8 +44,6 @@ func FindCompanyByName(d requester_types.StatusInvestResponse, name string) int 
 
 // SortCompanies Ordena as companhias pelos ranks
 func SortCompanies(d requester_types.StatusInvestResponse) map[string]RankItem {
-	fmt.Println("Ordenando rank de companhias...")
-
 	m := make(map[string]RankItem)
 
 	SetRankNameBySlice(&m, SortAscBy(d, "PL"), "PlPosition")

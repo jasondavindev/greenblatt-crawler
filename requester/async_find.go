@@ -11,8 +11,9 @@ import (
 
 // AdditionalFilter Filter type to async find
 type AdditionalFilter struct {
-	FilterName string
-	Value      string
+	FilterName  string
+	Value       string
+	Description string
 }
 
 // AddFilterable Filterable classes
@@ -21,7 +22,7 @@ type AddFilterable interface {
 }
 
 // AsyncFind Make parallel requests to API and return results
-func AsyncFind(cfg *config.ConfigSetup, addFilterClass []interface{ AddFilterable }) requester_types.StatusInvestResponse {
+func AsyncFind(configSetup *config.ConfigSetup, addFilterClass []interface{ AddFilterable }) requester_types.StatusInvestResponse {
 	var wg sync.WaitGroup
 	var ch chan requester_types.StatusInvestResponse
 
@@ -32,27 +33,28 @@ func AsyncFind(cfg *config.ConfigSetup, addFilterClass []interface{ AddFilterabl
 	wg.Add(length)
 
 	for _, filter := range filters {
-		go doAsyncFind(&wg, &ch, &cfg.Filters, filter)
+		go doAsyncFind(&wg, &ch, configSetup, filter)
 	}
 
 	wg.Wait()
 	close(ch)
 
-	return readResults(ch, &cfg.Grouping)
+	return readResults(ch, &configSetup.Grouping)
 }
 
-func doAsyncFind(wg *sync.WaitGroup, ch *chan requester_types.StatusInvestResponse, cfg *config.Filters, addFilter AdditionalFilter) {
+func doAsyncFind(wg *sync.WaitGroup, ch *chan requester_types.StatusInvestResponse, configSetup *config.ConfigSetup, addFilter AdditionalFilter) {
 	defer (*wg).Done()
 
-	filters := copyMapFiltersAndAddClassFilter(cfg, &addFilter)
+	filters := copyMapFiltersAndAddClassFilter(&configSetup.Filters, &addFilter)
 	response := SyncFind(&filters)
 	*ch <- response
+	fmt.Printf("[%s] encontrado %d resultados\n", addFilter.Description, len(response))
 }
 
-func copyMapFiltersAndAddClassFilter(cfg *config.Filters, addFilter *AdditionalFilter) config.Filters {
+func copyMapFiltersAndAddClassFilter(configSetup *config.Filters, addFilter *AdditionalFilter) config.Filters {
 	mapCopy := config.Filters{}
 
-	for k, v := range *cfg {
+	for k, v := range *configSetup {
 		mapCopy[k] = v
 	}
 
@@ -73,12 +75,12 @@ func setupAddFilters(addFilterClass []interface{ AddFilterable }) []AdditionalFi
 
 func readResults(ch chan requester_types.StatusInvestResponse, grouping *config.Grouping) requester_types.StatusInvestResponse {
 	results := requester_types.StatusInvestResponse{}
+	countTopResults := getCountTopResults(grouping.Top)
 
 	for response := range ch {
 		m := greenblatt.SortCompanies(response)
 		fp := greenblatt.GetSortedByFinalPosition(m, response)
-		topResults := getTopResults(fp, grouping.Top)
-		fmt.Println("Top: ", len(topResults))
+		topResults := getTopResults(fp, countTopResults)
 		results = append(results, topResults...)
 	}
 
@@ -99,4 +101,12 @@ func getTopResults(results requester_types.StatusInvestResponse, top int) reques
 	}
 
 	return topResults
+}
+
+func getCountTopResults(top int) int {
+	if top <= 0 {
+		return 5
+	}
+
+	return top
 }

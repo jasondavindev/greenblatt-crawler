@@ -25,5 +25,5 @@ filtros:
     - 100000000000000
   my_range: "0;25"
 agrupamento:
-  top: 1
-  class: "Sector"
+  top: 10
+  class: "sector"

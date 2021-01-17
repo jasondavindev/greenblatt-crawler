@@ -53,8 +53,6 @@ func ParseResponse(res io.Reader) requester_types.StatusInvestResponse {
 		log.Fatalln(err)
 	}
 
-	fmt.Printf("Encontrado %d resultados\n", len(b))
-
 	return b
 }
 

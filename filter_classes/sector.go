@@ -1,4 +1,4 @@
-package filter_classes
+package filterclasses
 
 import "github.com/jasondavindev/statusinvest-crawler/requester"
 
@@ -11,8 +11,9 @@ type Sector struct {
 // ToAddFilter Parse sector to AdditionalFitler
 func (s Sector) ToAddFilter() requester.AdditionalFilter {
 	return requester.AdditionalFilter{
-		FilterName: "Sector",
-		Value:      s.SectorID,
+		FilterName:  "Sector",
+		Value:       s.SectorID,
+		Description: s.Name,
 	}
 }
 
