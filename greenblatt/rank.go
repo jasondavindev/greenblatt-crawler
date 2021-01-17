@@ -1,7 +1,7 @@
 package greenblatt
 
 import (
-	"github.com/jasondavindev/statusinvest-crawler/requester"
+	"github.com/jasondavindev/statusinvest-crawler/requester_types"
 	"github.com/oleiade/reflections"
 )
 
@@ -14,7 +14,7 @@ type RankItem struct {
 }
 
 // SetRankNameBySlice Seta entradas do map pelo nome
-func SetRankNameBySlice(m *map[string]RankItem, d requester.StatusInvestResponse, fieldName string) {
+func SetRankNameBySlice(m *map[string]RankItem, d requester_types.StatusInvestResponse, fieldName string) {
 	for _, v := range d {
 		idx := FindCompanyByName(d, v.Ticker)
 		CreateKeyIfNotExists(m, v.Ticker)

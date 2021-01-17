@@ -4,13 +4,13 @@ import (
 	"github.com/jasondavindev/statusinvest-crawler/config"
 	"github.com/jasondavindev/statusinvest-crawler/csv"
 	"github.com/jasondavindev/statusinvest-crawler/greenblatt"
-	"github.com/jasondavindev/statusinvest-crawler/requester"
+	"github.com/jasondavindev/statusinvest-crawler/search"
 )
 
 func main() {
-	filters := config.CfgFactory("filtros.yml")
-	r := requester.Find(filters)
-	m := greenblatt.SortCompanies(r)
-	fp := greenblatt.GetSortedByFinalPosition(m, r)
-	csv.Write(fp)
+	configSetup := config.CfgFactory("filtros.yml")
+	results := search.GetSearchMode(configSetup)
+	sortedCompanies := greenblatt.SortCompanies(results)
+	finalPosition := greenblatt.GetSortedByFinalPosition(sortedCompanies, results)
+	csv.Write(finalPosition)
 }

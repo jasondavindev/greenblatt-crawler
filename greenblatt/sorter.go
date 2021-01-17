@@ -1,15 +1,14 @@
 package greenblatt
 
 import (
-	"fmt"
 	"sort"
 
-	"github.com/jasondavindev/statusinvest-crawler/requester"
+	"github.com/jasondavindev/statusinvest-crawler/requester_types"
 	"github.com/oleiade/reflections"
 )
 
 // SortAscBy Ordem crescente
-func SortAscBy(d requester.StatusInvestResponse, name string) requester.StatusInvestResponse {
+func SortAscBy(d requester_types.StatusInvestResponse, name string) requester_types.StatusInvestResponse {
 	sort.SliceStable(d, func(i, j int) bool {
 		fpl := GetOrZero(reflections.GetField(&d[i], name))
 		spl := GetOrZero(reflections.GetField(&d[j], name))
@@ -21,7 +20,7 @@ func SortAscBy(d requester.StatusInvestResponse, name string) requester.StatusIn
 }
 
 // SortDescBy Ordem decrescente
-func SortDescBy(d requester.StatusInvestResponse, name string) requester.StatusInvestResponse {
+func SortDescBy(d requester_types.StatusInvestResponse, name string) requester_types.StatusInvestResponse {
 	sort.SliceStable(d, func(i, j int) bool {
 		fpl := GetOrZero(reflections.GetField(&d[i], name))
 		spl := GetOrZero(reflections.GetField(&d[j], name))
@@ -33,7 +32,7 @@ func SortDescBy(d requester.StatusInvestResponse, name string) requester.StatusI
 }
 
 // FindCompanyByName Busca empresa por nome
-func FindCompanyByName(d requester.StatusInvestResponse, name string) int {
+func FindCompanyByName(d requester_types.StatusInvestResponse, name string) int {
 	for i := range d {
 		if d[i].Ticker == name {
 			return i
@@ -44,9 +43,7 @@ func FindCompanyByName(d requester.StatusInvestResponse, name string) int {
 }
 
 // SortCompanies Ordena as companhias pelos ranks
-func SortCompanies(d requester.StatusInvestResponse) map[string]RankItem {
-	fmt.Println("Ordenando rank de companhias...")
-
+func SortCompanies(d requester_types.StatusInvestResponse) map[string]RankItem {
 	m := make(map[string]RankItem)
 
 	SetRankNameBySlice(&m, SortAscBy(d, "PL"), "PlPosition")
@@ -57,7 +54,7 @@ func SortCompanies(d requester.StatusInvestResponse) map[string]RankItem {
 }
 
 // GetSortedByFinalPosition Ordena companhias pelo rank final
-func GetSortedByFinalPosition(m map[string]RankItem, d requester.StatusInvestResponse) requester.StatusInvestResponse {
+func GetSortedByFinalPosition(m map[string]RankItem, d requester_types.StatusInvestResponse) requester_types.StatusInvestResponse {
 	type kv struct {
 		Key   string
 		Value int
@@ -73,7 +70,7 @@ func GetSortedByFinalPosition(m map[string]RankItem, d requester.StatusInvestRes
 		return ss[i].Value < ss[j].Value
 	})
 
-	s := requester.StatusInvestResponse{}
+	s := requester_types.StatusInvestResponse{}
 
 	for _, kv := range ss {
 		idx := FindCompanyByName(d, kv.Key)

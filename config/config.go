@@ -12,8 +12,18 @@ import (
 // Filters Filtros disponiveis
 type Filters map[string]interface{}
 
+type Grouping struct {
+	Class string
+	Top   int
+}
+
+type ConfigSetup struct {
+	Filters  Filters
+	Grouping Grouping
+}
+
 // CfgFactory Carrega todos os filtros
-func CfgFactory(configPath string) Filters {
+func CfgFactory(configPath string) ConfigSetup {
 	fmt.Println("Carregando arquivo contendo os filtros...")
 
 	yamlFile, err := ioutil.ReadFile(configPath)
@@ -29,11 +39,19 @@ func CfgFactory(configPath string) Filters {
 		log.Fatal(err)
 	}
 
-	var c Filters
+	var filters Filters
+	var grouping Grouping
 
-	if err := provider.Get("filtros").Populate(&c); err != nil {
+	if err := provider.Get("filtros").Populate(&filters); err != nil {
 		log.Fatal(err)
 	}
 
-	return c
+	if err := provider.Get("agrupamento").Populate(&grouping); err != nil {
+		log.Fatal(err)
+	}
+
+	return ConfigSetup{
+		Filters:  filters,
+		Grouping: grouping,
+	}
 }

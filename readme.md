@@ -60,6 +60,23 @@ A API permite filtrar por alguns filtros extras que obecedem um formato diferent
 | Segment | string | vazio |
 | my_range | string | "0;25" |
 
+## Agrupamento
+
+É possível fazer uma busca agrupando por classes e o Top N de cada uma das classes. As classes são `segment`, `sector` e `subsector`. Para cada busca por classe, há uma pré-ordenação, assim, garantindo a ordenação correta do resultado final.
+
+### Arquivo de configuração
+
+```yaml
+filtros:
+  ...
+  ...
+agrupamento:
+  top: 10 # Os N primeiros no rank
+  class: "sector" # classes sector | subsector | segment
+```
+
+Se as configurações de agrupamento forem omitidas, a busca padrão será executada (não há agrupamento). Se o valor `top` for omitido, o valor `10` será usado como padrão.
+
 ## Ordenação
 
 A ordenação aplicada segue os seguintes criterios:
@@ -94,17 +111,5 @@ make dkbuild
 Após a etapa de build, será gerado um arquivo na pasta `build/greenblatt_crawler(.exe)`. Execute-o apenas clicando (Windows) ou da seguinte forma em ambientes Unix
 
 ```bash
-./build/greenblatt_crawler
+./bin/greenblatt_crawler
 ```
-
-Saída esperada
-
-```
-Carregando arquivo contendo os filtros...
-Buscando recursos na API Status Invest...
-Ordenando rank de companhias...
-Salvando dados em arquivo...
-Prontinho! Seus dados estão no arquivo result.csv
-```
-
-Seja feliz!

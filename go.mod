@@ -5,6 +5,9 @@ replace (
 	github.com/jasondavindev/statusinvest-crawler/csv => ./csv
 	github.com/jasondavindev/statusinvest-crawler/greenblatt => ./greenblatt
 	github.com/jasondavindev/statusinvest-crawler/requester => ./requester
+	github.com/jasondavindev/statusinvest-crawler/filter_classes => ./filter_classes
+	github.com/jasondavindev/statusinvest-crawler/requester_types => ./requester_types
+	github.com/jasondavindev/statusinvest-crawler/search => ./search
 )
 
 go 1.15
