@@ -44,17 +44,26 @@ type StatusInvestResponse = []StatusInvestResponseItem
 func Find(cfg config.Filters) StatusInvestResponse {
 	fmt.Println("Buscando recursos na API Status Invest...")
 
-	url := CreateURL(cfg)
+	reqParams := ParseFiltersToParams(&cfg)
+	json := ToJSON(reqParams)
 
+	url := CreateURL(cfg, json)
+	res := DoRequest(url)
+
+	defer res.Body.Close()
+
+	return ParseResponse(res.Body)
+}
+
+// DoRequest Make de request to API
+func DoRequest(url string) *http.Response {
 	res, err := http.Get(url)
 
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	defer res.Body.Close()
-
-	return ParseResponse(res.Body)
+	return res
 }
 
 // ParseResponse Converte resposta string para objeto
@@ -71,13 +80,13 @@ func ParseResponse(res io.Reader) StatusInvestResponse {
 		log.Fatalln(err)
 	}
 
+	fmt.Printf("Encontrado %d resultados\n", len(b))
+
 	return b
 }
 
 // CreateURL Cria string content URL de request
-func CreateURL(cfg config.Filters) string {
-	reqParams := ParseFiltersToParams(&cfg)
-	json := ToJSON(reqParams)
+func CreateURL(cfg config.Filters, json string) string {
 	return fmt.Sprintf("https://statusinvest.com.br/category/advancedsearchresult?CategoryType=1&search=%s", url.QueryEscape(json))
 }
 

@@ -12,7 +12,7 @@ import (
 
 // Write Escreve arquivo csv
 func Write(d requester.StatusInvestResponse) {
-	fmt.Println("Salvando dados em arquivo...")
+	fmt.Printf("Salvando %d resultados em arquivo...\n", len(d))
 
 	csvFileName := "result.csv"
 
