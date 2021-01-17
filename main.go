@@ -9,9 +9,9 @@ import (
 )
 
 func main() {
-	filters := config.CfgFactory("filtros.yml")
+	configSetup := config.CfgFactory("filtros.yml")
 	addFilters := filter_classes.GetSectorsAddFilterable()
-	r := requester.AsyncFind(&filters, addFilters)
+	r := requester.AsyncFind(&configSetup, addFilters)
 	m := greenblatt.SortCompanies(r)
 	fp := greenblatt.GetSortedByFinalPosition(m, r)
 	csv.Write(fp)

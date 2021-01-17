@@ -7,11 +7,11 @@ import (
 	"os"
 
 	"github.com/fatih/structs"
-	"github.com/jasondavindev/statusinvest-crawler/requester"
+	"github.com/jasondavindev/statusinvest-crawler/requester_types"
 )
 
 // Write Escreve arquivo csv
-func Write(d requester.StatusInvestResponse) {
+func Write(d requester_types.StatusInvestResponse) {
 	fmt.Printf("Salvando %d resultados em arquivo...\n", len(d))
 
 	csvFileName := "result.csv"
@@ -23,7 +23,7 @@ func Write(d requester.StatusInvestResponse) {
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	err = writer.Write(structs.Names(&requester.StatusInvestResponseItem{}))
+	err = writer.Write(structs.Names(&requester_types.StatusInvestResponseItem{}))
 	checkError("Cannot write to file", err)
 
 	for _, value := range d {
