@@ -17,9 +17,12 @@ type Grouping struct {
 	Top   int
 }
 
+type OutputFields []string
+
 type ConfigSetup struct {
-	Filters  Filters
-	Grouping Grouping
+	Filters      Filters
+	Grouping     Grouping
+	OutputFields OutputFields
 }
 
 // CfgFactory Carrega todos os filtros
@@ -41,6 +44,7 @@ func CfgFactory(configPath string) ConfigSetup {
 
 	var filters Filters
 	var grouping Grouping
+	var outputFields OutputFields
 
 	if err := provider.Get("filtros").Populate(&filters); err != nil {
 		log.Fatal(err)
@@ -50,8 +54,13 @@ func CfgFactory(configPath string) ConfigSetup {
 		log.Fatal(err)
 	}
 
+	if err := provider.Get("campos_saida").Populate(&outputFields); err != nil {
+		log.Fatal(err)
+	}
+
 	return ConfigSetup{
-		Filters:  filters,
-		Grouping: grouping,
+		Filters:      filters,
+		Grouping:     grouping,
+		OutputFields: outputFields,
 	}
 }

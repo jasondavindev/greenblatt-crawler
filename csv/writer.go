@@ -7,11 +7,12 @@ import (
 	"os"
 
 	"github.com/fatih/structs"
+	"github.com/jasondavindev/statusinvest-crawler/config"
 	"github.com/jasondavindev/statusinvest-crawler/requester_types"
 )
 
 // Write Escreve arquivo csv
-func Write(d requester_types.StatusInvestResponse) {
+func Write(d requester_types.StatusInvestResponse, outputFields config.OutputFields) {
 	fmt.Printf("Salvando %d resultados em arquivo...\n", len(d))
 
 	csvFileName := "result.csv"
@@ -23,11 +24,11 @@ func Write(d requester_types.StatusInvestResponse) {
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	err = writer.Write(structs.Names(&requester_types.StatusInvestResponseItem{}))
+	err = writer.Write(outputFields)
 	checkError("Cannot write to file", err)
 
 	for _, value := range d {
-		v := parseToStringSlice(structs.Values(value))
+		v := toStringSlice(outputFields, structs.Map(value))
 		err := writer.Write(v)
 		checkError("Cannot write to file", err)
 	}
@@ -41,11 +42,11 @@ func checkError(message string, err error) {
 	}
 }
 
-func parseToStringSlice(v []interface{}) []string {
-	r := make([]string, len(v))
+func toStringSlice(outputFields config.OutputFields, record map[string]interface{}) []string {
+	r := make([]string, len(record))
 
-	for i, v := range v {
-		r[i] = getValueAsString(v)
+	for i, field := range outputFields {
+		r[i] = getValueAsString(record[field])
 	}
 
 	return r
