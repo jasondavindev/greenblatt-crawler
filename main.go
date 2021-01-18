@@ -9,7 +9,8 @@ import (
 
 func main() {
 	configSetup := config.CfgFactory("filtros.yml")
-	results := search.GetSearchMode(configSetup)
+	searchMode := search.GetSearchMode(configSetup)
+	results := search.DoSearch(searchMode, configSetup)
 	sortedCompanies := greenblatt.SortCompanies(results)
 	finalPosition := greenblatt.GetSortedByFinalPosition(sortedCompanies, results)
 	csv.Write(finalPosition, configSetup.OutputFields)

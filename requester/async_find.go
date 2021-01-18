@@ -47,8 +47,17 @@ func doAsyncFind(wg *sync.WaitGroup, ch *chan requester_types.StatusInvestRespon
 
 	filters := copyMapFiltersAndAddClassFilter(&configSetup.Filters, &addFilter)
 	response := SyncFind(&filters)
-	*ch <- response
+	results := addClassToResults(response, addFilter)
+	*ch <- results
 	fmt.Printf("[%s] encontrado %d resultados\n", addFilter.Description, len(response))
+}
+
+func addClassToResults(results requester_types.StatusInvestResponse, addFilter AdditionalFilter) requester_types.StatusInvestResponse {
+	for k := range results {
+		results[k].Area = addFilter.Description
+	}
+
+	return results
 }
 
 func copyMapFiltersAndAddClassFilter(configSetup *config.Filters, addFilter *AdditionalFilter) config.Filters {

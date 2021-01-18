@@ -23,6 +23,7 @@ type StatusInvestResponseItem struct {
 	Roa                            float32 `json:"roa"`
 	Roe                            float32 `json:"roe"`
 	Vpa                            float32 `json:"vpa"`
+	Area                           string
 }
 
 // StatusInvestResponse Resposta status invest
