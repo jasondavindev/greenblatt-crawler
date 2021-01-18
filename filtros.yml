@@ -24,6 +24,30 @@ filtros:
     - 1000000
     - 100000000000000
   my_range: "0;25"
+
 agrupamento:
   top: 4
   class: "subsector"
+
+campos_saida:
+  - Companhia
+  - Ticker
+  - Preco
+  - PL
+  - Dividendo
+  #- Roic
+  #- DividaLiquidaEbit
+  #- DividaliquidaPatrimonioLiquido
+  #- EVEbit
+  #- LiquidezMediaDiaria
+  #- Lpa
+  - Roe
+  - LucrosCagr5
+  - ReceitasCagr5
+  #- MargemBruta
+  #- MargemEbit
+  #- MargemLiquida
+  - PEbit
+  - PVP
+  #- Roa
+  - Vpa

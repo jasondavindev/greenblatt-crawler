@@ -12,5 +12,5 @@ func main() {
 	results := search.GetSearchMode(configSetup)
 	sortedCompanies := greenblatt.SortCompanies(results)
 	finalPosition := greenblatt.GetSortedByFinalPosition(sortedCompanies, results)
-	csv.Write(finalPosition)
+	csv.Write(finalPosition, configSetup.OutputFields)
 }
