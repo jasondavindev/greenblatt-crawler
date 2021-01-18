@@ -78,9 +78,10 @@ func readResults(ch chan requester_types.StatusInvestResponse, grouping *config.
 	countTopResults := getCountTopResults(grouping.Top)
 
 	for response := range ch {
-		m := greenblatt.SortCompanies(response)
-		fp := greenblatt.GetSortedByFinalPosition(m, response)
-		topResults := getTopResults(fp, countTopResults)
+		uniqueCompanies := removeDuplicateCompanies(response)
+		sortedCompanies := greenblatt.SortCompanies(uniqueCompanies)
+		finalPosition := greenblatt.GetSortedByFinalPosition(sortedCompanies, response)
+		topResults := getTopResults(finalPosition, countTopResults)
 		results = append(results, topResults...)
 	}
 
@@ -109,4 +110,28 @@ func getCountTopResults(top int) int {
 	}
 
 	return top
+}
+
+func removeDuplicateCompanies(companies requester_types.StatusInvestResponse) requester_types.StatusInvestResponse {
+	results := requester_types.StatusInvestResponse{}
+	resultsMap := map[string]requester_types.StatusInvestResponseItem{}
+	const TickerONType = "3"
+
+	for _, company := range companies {
+		companyTickPrefix := company.Ticker[0:4]
+		tickerType := company.Ticker[4:]
+
+		if _, ok := resultsMap[companyTickPrefix]; !ok ||
+			(ok && (tickerType == TickerONType ||
+				company.PL < resultsMap[companyTickPrefix].PL ||
+				company.Preco < resultsMap[companyTickPrefix].Preco)) {
+			resultsMap[companyTickPrefix] = company
+		}
+	}
+
+	for _, company := range resultsMap {
+		results = append(results, company)
+	}
+
+	return results
 }

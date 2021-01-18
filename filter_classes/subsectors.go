@@ -12,7 +12,7 @@ type SubSector struct {
 // ToAddFilter Parse sector to AdditionalFitler
 func (s SubSector) ToAddFilter() requester.AdditionalFilter {
 	return requester.AdditionalFilter{
-		FilterName:  "Sector",
+		FilterName:  "SubSector",
 		Value:       s.SubSectorID,
 		Description: s.Name,
 	}

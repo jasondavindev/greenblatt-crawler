@@ -1,29 +1,29 @@
 filtros:
   dy:
-    - 0.1
+    - 2
     - 25
   p_L:
     - 0.001
     - 20
   dividaLiquidaEbit:
-    - 0.01
+    - -10
     - 3
   dividaliquidaPatrimonioLiquido:
-    - 0.01
+    - -10
     - 3
   roe:
-    - 0.01
+    - 3
     - 100
   roic:
-    - 0.01
+    - 3
     - 100
   roa:
-    - 0.01
+    - 3
     - 100
   liquidezMediaDiaria:
     - 1000000
     - 100000000000000
   my_range: "0;25"
 agrupamento:
-  top: 10
-  class: "sector"
+  top: 4
+  class: "subsector"

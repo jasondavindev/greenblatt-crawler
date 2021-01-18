@@ -11,7 +11,7 @@ type Segment struct {
 // ToAddFilter Parse sector to AdditionalFitler
 func (s Segment) ToAddFilter() requester.AdditionalFilter {
 	return requester.AdditionalFilter{
-		FilterName:  "Sector",
+		FilterName:  "Segment",
 		Value:       s.SegmentID,
 		Description: s.Name,
 	}
