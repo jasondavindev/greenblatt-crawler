@@ -35,7 +35,7 @@ func DoSearch(searchMode Mode, configSetup config.ConfigSetup) []requester_types
 }
 
 func hasClassFilter(configSetup config.ConfigSetup) bool {
-	return configSetup.Filters["Segment"] != nil ||
-		configSetup.Filters["Sector"] != nil ||
-		configSetup.Filters["SubSector"] != nil
+	return configSetup.Filters["segment"] != nil ||
+		configSetup.Filters["sector"] != nil ||
+		configSetup.Filters["subsector"] != nil
 }

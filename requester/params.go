@@ -1,6 +1,8 @@
 package requester
 
 import (
+	"strings"
+
 	"github.com/jasondavindev/statusinvest-crawler/config"
 )
 
@@ -36,7 +38,7 @@ func ParseFiltersToParams(f *config.Filters) RequestParam {
 
 func isExcludedField(key string) bool {
 	for _, f := range GetExludedFields() {
-		if f == key {
+		if f == strings.ToLower(key) {
 			return true
 		}
 	}
@@ -57,7 +59,7 @@ func parseFilterToParam(key string, values []float32) *FieldProperties {
 
 // GetExludedFields Campos que não devem ser convertidos
 func GetExludedFields() []string {
-	return []string{"my_range", "Segment", "SubSector", "Sector"}
+	return []string{"my_range", "segment", "subsector", "sector"}
 }
 
 func parsenInterfaceToFloat32Slice(i interface{}) []float32 {
